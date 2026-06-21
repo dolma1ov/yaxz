@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Соня ❤️</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --pink: #ff4d6d;
+  --pink2: #ff85a1;
+  --glow: rgba(255,77,109,0.45);
+  --bg: #07040a;
+}
+
+html, body {
+  width:100%; height:100%;
+  background: var(--bg);
+  font-family: 'Georgia', serif;
+  color: #fff;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* scanlines */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:999;
+  background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.06) 3px,rgba(0,0,0,0.06) 4px);
+}
+
+/* ========== STARS ========== */
+#stars { position:fixed; inset:0; pointer-events:none; }
+.star {
+  position:absolute; border-radius:50%; background:#fff;
+  animation: tw var(--d) ease-in-out infinite var(--dl); opacity:0;
+}
+@keyframes tw { 0%,100%{opacity:0} 50%{opacity:var(--op)} }
+
+/* floating particles */
+.particle {
+  position:absolute; border-radius:50%;
+  background: var(--pink);
+  animation: floatUp var(--fd,6s) ease-in infinite var(--fdl,0s);
+  opacity:0;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) scale(1); opacity:0.6; }
+  100% { transform: translateY(-100vh) scale(0.2); opacity:0; }
+}
+
+/* ========== SCREENS ========== */
+.screen {
+  position:fixed; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  transition: opacity 0.9s, transform 0.9s;
+}
+.screen.hidden { opacity:0; pointer-events:none; transform:scale(1.05); }
+.screen.out    { opacity:0; pointer-events:none; transform:scale(0.95); }
+
+/* ========== SCREEN 1 — WELCOME ========== */
+#s1 { gap: 2.4rem; padding: 2rem; text-align:center; }
+
+.hello-eyebrow {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(9px, 2.5vw, 12px);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,77,109,0.55);
+}
+
+.hello-name {
+  font-size: clamp(3rem, 16vw, 7rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+}
+.hello-name span {
+  position: relative;
+  display: inline-block;
+  animation: nameFloat 4s ease-in-out infinite;
+}
+@keyframes nameFloat {
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-8px); }
+}
+
+.hello-name::after {
+  content:'';
+  position:absolute; left:0; right:0; bottom:-6px; height:2px;
+  background: linear-gradient(90deg, transparent, var(--pink), transparent);
+  opacity:0.6;
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+.hello-sub {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(11px,3vw,14px);
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.15em;
+}
+
+.enter-btn {
+  margin-top: 0.5rem;
+  padding: 0.85rem 2.6rem;
+  border: 1px solid rgba(255,77,109,0.4);
+  background: rgba(255,77,109,0.07);
+  color: var(--pink2);
+  font-family: 'Courier New', monospace;
+  font-size: clamp(10px,3vw,13px);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.enter-btn::before {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,77,109,0.12) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.enter-btn:hover::before, .enter-btn:active::before { transform: translateX(100%); }
+.enter-btn:hover, .enter-btn:active {
+  background: rgba(255,77,109,0.15);
+  border-color: rgba(255,77,109,0.7);
+  box-shadow: 0 0 24px rgba(255,77,109,0.25);
+}
+
+/* small blinking heart */
+.blink-heart {
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  animation: hbeat 1.1s ease-in-out infinite;
+  display:inline-block;
+}
+@keyframes hbeat {
+  0%,100%{transform:scale(1)}
+  14%{transform:scale(1.3)}
+  28%{transform:scale(1)}
+  42%{transform:scale(1.2)}
+  56%{transform:scale(1)}
+}
+
+/* ========== SCREEN 2 — QUESTION ========== */
+#s2 { gap: 2.8rem; padding: 2rem; text-align:center; }
+
+.question {
+  font-size: clamp(1.5rem, 7vw, 3rem);
+  font-weight: 400;
+  line-height: 1.3;
+  color: #fff;
+  max-width: 480px;
+}
+.question em {
+  font-style: normal;
+  color: var(--pink);
+  text-shadow: 0 0 18px var(--glow);
+}
+
+.q-sub {
+  font-family: 'Courier New', monospace;
+  font-size: clamp(9px,2.5vw,11px);
+  color: rgba(255,255,255,0.2);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+}
+
+.btns {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-yes {
+  padding: 0.85rem 2.4rem;
+  background: var(--pink);
+  color: #fff;
+  border: none;
+  font-family: 'Courier New', monospace;
+  font-size: clamp(11px,3.5vw,14px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 28px rgba(255,77,109,0.5);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.btn-yes:hover, .btn-yes:active {
+  box-shadow: 0 0 42px rgba(255,77,109,0.75);
+  transform: scale(1.04);
+}
+
+/* fixed — moves freely over the whole viewport */
+.btn-no {
+  padding: 0.7rem 1.8rem;
+  background: transparent;
+  color: rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-family: 'Courier New', monospace;
+  font-size: clamp(10px,3vw,12px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: fixed;
+  white-space: nowrap;
+  transition: left 0.35s cubic-bezier(.22,.68,0,1.4),
+              top  0.35s cubic-bezier(.22,.68,0,1.4),
+              transform 0.35s cubic-bezier(.22,.68,0,1.4);
+  z-index: 50;
+}
+.btn-no:hover { color:rgba(255,255,255,0.15); border-color:rgba(255,255,255,0.06); }
+
+.no-placeholder { display:none; }
+
+/* ========== SCREEN 3 — HEART ========== */
+#s3 { pointer-events:none; }
+#heart-canvas { position:fixed; inset:0; width:100%; height:100%; }
+
+.love-label {
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  text-align:center; z-index:10; pointer-events:all;
+  opacity:0; transition: opacity 1.5s 3s;
+}
+#s3.show-label .love-label { opacity:1; }
+
+.love-label h2 {
+  font-family:'Courier New',monospace;
+  font-size: clamp(11px,3.5vw,17px);
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:var(--pink);
+  text-shadow:0 0 18px var(--glow), 0 0 36px var(--glow);
+}
+.love-label .divider {
+  width:48px; height:1px;
+  background:rgba(255,77,109,0.35);
+  margin:.8rem auto 1.2rem;
+}
+.love-label .reset {
+  background:none; border:none;
+  color:rgba(255,255,255,0.18);
+  font-family:'Courier New',monospace;
+  font-size:10px; letter-spacing:0.2em;
+  text-transform:uppercase; cursor:pointer;
+  pointer-events:all;
+  transition:color 0.2s;
+}
+.love-label .reset:hover { color:rgba(255,255,255,0.5); }
+
+/* corner deco */
+.corner {
+  position:fixed; font-family:'Courier New',monospace;
+  font-size:9px; letter-spacing:0.12em; text-transform:uppercase;
+  color:rgba(255,255,255,0.07); line-height:1.7; pointer-events:none;
+}
+.corner.tl{top:1.2rem;left:1.2rem;}
+.corner.br{bottom:1.2rem;right:1.2rem;text-align:right;}
+
+/* ========== MOBILE NO BTN ========== */
+.no-mobile {
+  background:transparent;
+  color:rgba(255,255,255,0.25);
+  border:1px solid rgba(255,255,255,0.1);
+  font-family:'Courier New',monospace;
+  font-size:clamp(10px,3vw,12px);
+  letter-spacing:0.2em; text-transform:uppercase;
+  padding:0.65rem 1.6rem; cursor:pointer;
+  transition: transform 0.15s;
+}
+</style>
+</head>
+<body>
+
+<!-- STARS -->
+<div id="stars"></div>
+
+<!-- NO button: fixed, outside all screens -->
+<button class="btn-no" id="btn-no" style="display:none">Нет</button>
+
+<!-- ======== SCREEN 1: WELCOME ======== -->
+<div class="screen" id="s1">
+  <div class="hello-eyebrow">// for you</div>
+  <div>
+    <div class="hello-name"><span>Соня</span></div>
+  </div>
+  <div class="hello-sub">у меня кое-что есть для тебя&nbsp;&nbsp;<span class="blink-heart">❤️</span></div>
+  <button class="enter-btn" onclick="goToQ()">Открыть</button>
+</div>
+
+<!-- ======== SCREEN 2: QUESTION ======== -->
+<div class="screen hidden" id="s2">
+  <div class="question">Соня,<br>давай <em>встречаться</em>?</div>
+  <div class="q-sub">// выбери мудро</div>
+
+  <div class="btns" id="btns-wrap">
+    <button class="btn-yes" onclick="goToHeart()">Да 🥺</button>
+  </div>
+</div>
+
+<!-- ======== SCREEN 3: HEART ======== -->
+<div class="screen hidden" id="s3">
+  <canvas id="heart-canvas"></canvas>
+  <div class="love-label">
+    <h2>i love you</h2>
+    <div class="divider"></div>
+    <button class="reset" onclick="goToS1()">← сначала</button>
+  </div>
+  <div class="corner tl"><div>ln: 143</div><div>id: 0xLOVE</div><div>type: organic_emotion</div></div>
+  <div class="corner br">heart_reveal // success</div>
+</div>
+
+<script>
+/* ---- STARS ---- */
+const starsEl = document.getElementById('stars');
+for (let i=0;i<140;i++){
+  const s=document.createElement('div'); s.className='star';
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;
+    width:${Math.random()<0.15?3:2}px;height:${Math.random()<0.15?3:2}px;
+    --d:${2+Math.random()*5}s;--dl:${Math.random()*6}s;--op:${0.3+Math.random()*0.6};`;
+  starsEl.appendChild(s);
+}
+
+/* ---- PARTICLES ---- */
+function spawnParticle(){
+  const p=document.createElement('div'); p.className='particle';
+  const sz=2+Math.random()*4;
+  p.style.cssText=`width:${sz}px;height:${sz}px;
+    left:${Math.random()*100}%;bottom:0;
+    --fd:${5+Math.random()*8}s;--fdl:${Math.random()*4}s;
+    opacity:0.5;filter:blur(${Math.random()*1}px);`;
+  starsEl.appendChild(p);
+  setTimeout(()=>p.remove(), 14000);
+}
+setInterval(spawnParticle, 700);
+
+/* ---- SCREENS ---- */
+const s1=document.getElementById('s1');
+const s2=document.getElementById('s2');
+const s3=document.getElementById('s3');
+
+function showScreen(el){
+  [s1,s2,s3].forEach(s=>{ if(s!==el){ s.classList.add('out'); s.classList.remove('hidden'); setTimeout(()=>{s.classList.add('hidden');s.classList.remove('out');},900); } });
+  el.classList.remove('hidden','out');
+}
+
+function goToQ(){ showScreen(s2); noBtn.style.display=""; setTimeout(setupNoBtn, 50); }
+function goToS1(){ stopHeart(); showScreen(s1); s3.classList.remove('show-label'); noBtn.style.display="none"; }
+function goToHeart(){ showScreen(s3); startHeart(); setTimeout(()=>s3.classList.add('show-label'),200); noBtn.style.display="none"; }
+
+/* ---- NO BUTTON ---- */
+const noBtn = document.getElementById('btn-no');
+let fleeing = false;
+let noBtnPlaced = false;
+
+function setupNoBtn(){
+  // Place btn-no next to the Yes button initially
+  const yesBtn = document.querySelector('.btn-yes');
+  const r = yesBtn.getBoundingClientRect();
+  noBtn.style.transition = 'none';
+  noBtn.style.left = (r.right + 16) + 'px';
+  noBtn.style.top  = r.top + 'px';
+  noBtnPlaced = true;
+
+  const isMobile = window.matchMedia('(hover:none)').matches;
+  if(isMobile){
+    noBtn.onclick = mobileDodge;
+  }
+}
+
+// Desktop: flee on mouseenter / mousemove
+noBtn.addEventListener('mouseenter', onNoHover);
+noBtn.addEventListener('mousemove',  onNoHover);
+
+function onNoHover(e){ dodge(e.clientX, e.clientY); }
+
+function dodge(mx, my){
+  if(fleeing) return;
+  fleeing = true;
+  const margin = 20;
+  const bw = noBtn.offsetWidth  || 90;
+  const bh = noBtn.offsetHeight || 40;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let nx, ny, att=0;
+  do {
+    nx = margin + Math.random()*(vw - bw - margin*2);
+    ny = margin + Math.random()*(vh - bh - margin*2);
+    att++;
+  } while(Math.hypot(nx+bw/2 - mx, ny+bh/2 - my) < 180 && att < 40);
+
+  noBtn.style.transition='left 0.32s cubic-bezier(.22,.68,0,1.35), top 0.32s cubic-bezier(.22,.68,0,1.35)';
+  noBtn.style.left = nx + 'px';
+  noBtn.style.top  = ny + 'px';
+  setTimeout(()=>{ fleeing=false; }, 350);
+}
+
+// Mobile: jump on tap
+let mobilePos = 0;
+const mobilePosArr = [
+  [0.15, 0.25],[0.7, 0.2],[0.5, 0.75],[0.1, 0.7],
+  [0.8, 0.65],[0.35, 0.15],[0.6, 0.5],[0.2, 0.5],
+];
+function mobileDodge(e){
+  e.preventDefault();
+  const vw=window.innerWidth, vh=window.innerHeight;
+  const bw=noBtn.offsetWidth||90, bh=noBtn.offsetHeight||40;
+  const [fx,fy] = mobilePosArr[mobilePos % mobilePosArr.length];
+  noBtn.style.left = Math.min(fx*vw, vw-bw-10) + 'px';
+  noBtn.style.top  = Math.min(fy*vh, vh-bh-10) + 'px';
+  mobilePos++;
+}
+
+/* ---- HEART CANVAS ---- */
+const canvas = document.getElementById('heart-canvas');
+const ctx = canvas.getContext('2d');
+let raf=null, startTime=null, points=[];
+
+function hx(t){ return 16*Math.pow(Math.sin(t),3); }
+function hy(t){ return -(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t)); }
+
+function buildPoints(){
+  points=[];
+  const cx=canvas.width/2, cy=canvas.height/2;
+  const scale = Math.min(canvas.width,canvas.height)/44;
+  const fs = Math.max(9, Math.min(13, canvas.width/38));
+
+  const addRing=(s,step,maxd)=>{
+    for(let t=0;t<Math.PI*2;t+=step){
+      points.push({x:cx+hx(t)*scale*s, y:cy+hy(t)*scale*s,
+        a:0, ta:0.5+Math.random()*0.5, d:Math.random()*maxd});
+    }
+  };
+  addRing(1,   0.04, 1200);
+  addRing(0.85,0.07, 1600);
+  addRing(0.7, 0.08, 2000);
+  addRing(0.55,0.09, 2200);
+  addRing(0.4, 0.11, 2500);
+  addRing(0.25,0.14, 2800);
+  addRing(0.12,0.25, 3000);
+  return fs;
+}
+
+let fontSize=11;
+function resizeCanvas(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  fontSize=buildPoints();
+}
+
+const WORD='i love you ';
+function drawFrame(ts){
+  if(!startTime) startTime=ts;
+  const el=ts-startTime;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.font=`${fontSize}px "Courier New",monospace`;
+  const w=ctx.measureText(WORD).width;
+  points.forEach(p=>{
+    if(el>p.d) p.a+=(p.ta-p.a)*0.022;
+    ctx.fillStyle=`rgba(255,77,109,${p.a})`;
+    ctx.fillText(WORD, p.x-w/2, p.y+fontSize/3);
+  });
+  // glow pass
+  ctx.save();
+  ctx.filter='blur(7px)';
+  ctx.globalAlpha=0.18;
+  points.filter((_,i)=>i%5===0).forEach(p=>{
+    if(p.a>0.08){
+      ctx.fillStyle=`rgba(255,77,109,${p.a})`;
+      ctx.fillText(WORD, p.x-w/2, p.y+fontSize/3);
+    }
+  });
+  ctx.restore();
+  raf=requestAnimationFrame(drawFrame);
+}
+
+function startHeart(){
+  resizeCanvas(); startTime=null;
+  raf=requestAnimationFrame(drawFrame);
+  window.addEventListener('resize',resizeCanvas);
+}
+function stopHeart(){
+  if(raf){cancelAnimationFrame(raf);raf=null;}
+  window.removeEventListener('resize',resizeCanvas);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  startTime=null; points=[];
+}
+</script>
+</body>
+</html>
